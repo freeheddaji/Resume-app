@@ -1,0 +1,73 @@
+{
+    "contact": {
+        "full_name": "EL HEDDAJI AHMED",
+        "email": "elheddaji.ahmed1@gmail.com",
+        "phone": "0600473545",
+        "linkedin": "www.linkedin.com/in/ahmed-el-heddaji-a4a2b32b2"
+    },
+    "experience": [
+        {
+            "title": "HR Development \\& OLS Intern",
+            "dates": "Nov 2024 -- Apr 2025",
+            "company": "YAZAKI",
+            "location": "Kenitra, Morocco",
+            "accomplishments": [
+                "Optimized training program effectiveness by analyzing data for over 1,000 operators, developing and presenting KPIs that pinpointed critical skill gaps and led to a revised, more effective training curriculum.",
+                "Directed the comprehensive performance evaluation process for 60 line managers, conducting in-depth analysis to identify critical performance gaps and formulate targeted improvement strategies.",
+                "Engineered and deployed a fully automated digital system in Excel to track training hours and trainer performance, enabling instant KPI generation and eliminating manual reporting delays.",
+                "Conducted comprehensive training sessions for 25 operators on production standards and internal policies, enhancing compliance and operational efficiency.",
+                "Contributed to recruitment efforts by participating in candidate interviews and evaluations, supporting the hiring of qualified personnel.",
+                "Facilitated the modernization of the training center and actively contributed to key departmental transformation initiatives.",
+                "Orchestrated critical support for internal audit processes and IATF 16949 compliance preparations, ensuring rigorous adherence to quality management standards.",
+                "Administered and maintained accurate HR data within the company's Human Resources Information System (HRIS) platform."
+            ]
+        },
+        {
+            "title": "Inventory Control Intern",
+            "dates": "Jan 2023 -- Feb 2023",
+            "company": "Marjane",
+            "location": "Sidi Slimane, Morocco",
+            "accomplishments": [
+                "Conducted daily inventory audits, maintaining 99.5\\% stock accuracy and promptly resolving discrepancies to minimize shrinkage.",
+                "Orchestrated semi-annual inventory processes for over 5,000 SKUs, ensuring comprehensive stock assessment and enhancing data integrity.",
+                "Validated daily in-store pricing for 500+ products, achieving 99.9\\% accuracy to enhance customer satisfaction and reduce pricing discrepancies."
+            ]
+        }
+    ],
+    "summary": "Highly analytical and process-driven professional with a proven track record in optimizing HR development and operational efficiency. Expertly leveraged data analysis for over 1,000 operators to identify critical skill gaps, redesigned training curricula, and engineered automated systems to eliminate reporting delays, while also achieving high accuracy in inventory control and supporting critical compliance.",
+    "education": [
+        {
+            "institution": "Faculty of Economics and Management",
+            "degree": "Master of Human Ressources Management",
+            "dates": "2023 -- 2025",
+            "location": "Kenitra, Morocco"
+        },
+        {
+            "institution": "Faculty of Economics and Management",
+            "degree": "Bachlor of Human Ressources Management",
+            "dates": "2018 -- 2023",
+            "location": "Kenitra"
+        }
+    ],
+    "skills": {
+        "technical": [
+            "Advanced Excel (PivotTables, Macros, KPI Dashboards)",
+            "HRIS (Data Entry Management)",
+            "Data Visualization (Charts, Dashboards)",
+            "Process Automation (Excel-based Tracking Systems)",
+            "Data Analysis (Identifying trends and insights from HR data)"
+        ],
+        "professional": [
+            "Problem Solving",
+            "Adaptability \\& Flexibility",
+            "Multitasking \\& Time Management",
+            "Communication (Written \\& Verbal)",
+            "Attention to details",
+            "Teamwork \\& Collaboration"
+        ]
+    },
+    "languages": [
+        "English : Highly Proficient",
+        "French : Good Command"
+    ]
+}

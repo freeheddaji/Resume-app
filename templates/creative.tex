@@ -1,0 +1,47 @@
+\documentclass[a4paper,11pt]{{article}}
+\usepackage[english]{{babel}}
+\usepackage{{geometry}}
+\usepackage{{titlesec}}
+\usepackage[usenames,dvipsnames]{{xcolor}}
+\usepackage[hidelinks]{{hyperref}}
+\usepackage{{enumitem}}
+\usepackage{{fontawesome5}} % For icons
+
+\definecolor{{primarycolor}}{{rgb}}{{0.2, 0.4, 0.6}} % A nice blue
+\definecolor{{secondarycolor}}{{rgb}}{{0.95, 0.95, 0.95}} % A light grey
+
+\geometry{{a4paper, left=0.75in, right=0.75in, top=0.75in, bottom=0.75in}}
+\pagestyle{{empty}}
+\setlength{{\parindent}}{{0pt}}
+
+\titleformat{{\section}}{{\vspace{{10pt}}\color{{primarycolor}}\scshape\raggedright\Large\bfseries}}{{}}{{0em}}{{}}
+
+\begin{{document}}
+
+\begin{{center}}
+    \colorbox{{secondarycolor}}{{
+        \begin{{minipage}}{{0.95\textwidth}}
+            \centering
+            \vspace{{5pt}}
+            {{\Huge \bfseries {FULL_NAME}}}
+            \vspace{{5pt}}
+
+            \faEnvelope \hspace{{2pt}} \href{{mailto:{EMAIL}}}{{{EMAIL}}} \quad
+            \faPhone \hspace{{2pt}} {PHONE} \quad
+            \faLinkedin \hspace{{2pt}} \href{{{LINKEDIN}}}{{{LINKEDIN_DISPLAY}}}
+            \vspace{{5pt}}
+        \end{{minipage}}
+    }}
+\end{{center}}
+
+{SUMMARY_SECTION}
+
+{EXPERIENCE_SECTION}
+
+{EDUCATION_SECTION}
+
+{SKILLS_SECTION}
+
+{LANGUAGES_SECTION}
+
+\end{{document}}

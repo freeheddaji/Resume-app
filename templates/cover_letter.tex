@@ -1,0 +1,34 @@
+\documentclass[11pt, a4paper]{{letter}}
+\usepackage[english]{{babel}}
+\usepackage[hidelinks]{{hyperref}}
+\usepackage{{helvet}}
+\renewcommand{{\familydefault}}{{\sfdefault}}
+
+% --- Your details for the header ---
+\signature{{{FULL_NAME}}}
+\address{{{FULL_NAME} \\ {PHONE} \\ \href{{mailto:{EMAIL}}}{{{EMAIL}}} \\ \href{{{LINKEDIN}}}{{LinkedIn Profile}}}}
+
+% --- Removes the default indentation for the closing signature ---
+\longindentation=0pt 
+
+\begin{{document}}
+
+% --- Recipient's details go here ---
+\begin{{letter}}{{{HIRING_MANAGER} \\ {COMPANY} \\ {COMPANY_ADDRESS}}}
+
+% --- The Salutation ---
+\opening{{Dear {HIRING_MANAGER},}}
+
+% --- The Subject Line ---
+\textbf{{Re: {JOB_TITLE} Position}}
+\vspace{{1em}}
+
+% --- The Main Body ---
+{BODY}
+
+% --- The Closing ---
+\closing{{Sincerely,}}
+
+
+\end{{letter}}
+\end{{document}}

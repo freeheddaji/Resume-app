@@ -1,0 +1,36 @@
+\documentclass[a4paper,11pt]{{article}}
+\usepackage[english]{{babel}}
+\usepackage{{geometry}}
+\usepackage{{titlesec}}
+\usepackage[usenames,dvipsnames]{{xcolor}}
+\usepackage[hidelinks]{{hyperref}}
+\usepackage{{enumitem}}
+\usepackage{{ragged2e}}
+
+\geometry{{a4paper, left=0.75in, right=0.75in, top=0.75in, bottom=0.75in, footskip=.5cm}}
+\urlstyle{{same}}
+\setlength{{\parindent}}{{0pt}}
+\titleformat{{\section}}{{\vspace{{8pt}}\scshape\raggedright\large\bfseries}}{{}}{{0em}}{{}}[\color{{black}}\titlerule \vspace{{-5pt}}]
+\newcommand{{\resumeItem}}[1]{{\item\small{{\justify{{#1}}}}}}
+
+\begin{{document}}
+
+\begin{{center}}
+    {{\Huge \scshape \textbf{{FULL_NAME}}}} \\
+    \vspace{{5pt}}
+    \href{{mailto:{EMAIL}}}{{{EMAIL}}} $|$ {PHONE} $|$ \href{{{LINKEDIN}}}{{{LINKEDIN_DISPLAY}}}
+\end{{center}}
+
+{SUMMARY_SECTION}
+
+{EXPERIENCE_SECTION}
+
+{EDUCATION_SECTION}
+
+\newpage
+
+{SKILLS_SECTION}
+
+{LANGUAGES_SECTION}
+
+\end{{document}}
