@@ -298,8 +298,6 @@ def check_for_reminders():
         CONSOLE.print(Panel(reminder_text, title="[bold yellow]🔔 Follow-up Reminders[/bold yellow]", border_style="yellow"))
 
 # --- LaTeX Section Builders & Generation ---
-# Resume.py
-
 def build_summary_section(data):
     """Builds the LaTeX code for the summary section."""
     if not data.get("summary"):
@@ -307,8 +305,6 @@ def build_summary_section(data):
     # FIX: Removed the non-standard \justify{...} command.
     # LaTeX justifies paragraphs by default.
     return f"\\section*{{Summary}}\n{sanitize_for_latex(data['summary'])}\\vspace{{10pt}}\n"
-
-# Resume.py
 
 def build_experience_section(data):
     """Builds the LaTeX code for the professional experience section."""
@@ -345,7 +341,6 @@ def build_education_section(data):
         education_str += f"  \\item\n    \\begin{{tabular*}}{{\\textwidth}}{{@{{\\extracolsep{{\\fill}}}}l r}}\n      \\textbf{{\\large {institution}}} & {{\\small {dates}}} \\\\\n      \\textit{{\\small {degree}}} & \\textit{{\\small {location}}} \\\\\n    \\end{{tabular*}}\\vspace{{-2pt}}\n"
     education_str += "\\end{itemize}\n\n"
     return education_str
-# Resume.py
 
 def build_skills_section(data):
     """Builds the LaTeX code for the skills section."""
@@ -417,10 +412,23 @@ def compile_latex_to_pdf(latex_code, filename_base):
             return f"{filename_base}.pdf"
         except subprocess.CalledProcessError as e:
             log_path = os.path.join(output_dir, f"{filename_base}.log")
-            CONSOLE.print(f"[bold red]Error during PDF compilation. Check log: {log_path}[/bold red]")
-            # FIX: Print the actual captured error from pdflatex for better debugging
-            if e.stderr:
-                CONSOLE.print(Panel(e.stderr, title="[bold red]Compiler Error Output[/bold red]", border_style="red"))
+            CONSOLE.print(f"[bold red]Error during PDF compilation. Check the log file for full details: {log_path}[/bold red]")
+            
+            # DEBUGGING: Enhanced error reporting
+            error_output = e.stdout if e.stdout else ""
+            error_output += e.stderr if e.stderr else ""
+
+            if error_output:
+                # Try to find the specific error line from the output
+                error_line_match = re.search(r"^!.*$", error_output, re.MULTILINE)
+                context_match = re.search(r"^l\.\d+.*$", error_output, re.MULTILINE)
+                
+                error_message = "Could not automatically pinpoint the exact error line from the log."
+                if error_line_match and context_match:
+                    error_message = f"Error: {error_line_match.group(0)}\nContext: {context_match.group(0)}"
+                
+                CONSOLE.print(Panel(error_message, title="[bold red]Compiler Error Snapshot[/bold red]", border_style="red"))
+                CONSOLE.print("[cyan]The full compiler output is in the .log file. The most critical error is usually near the end.[/cyan]")
             return None
         finally:
             # Clean up auxiliary files
@@ -576,7 +584,7 @@ def generation_workflow(resume_data, filename_base=None):
     
     if not filename_base:
         # FIX: Use .get() for safer dictionary access to prevent errors if resume_data is not a valid dict.
-        full_name = resume_data['contact']['full_name'] if isinstance(resume_data, dict) and 'contact' in resume_data and 'full_name' in resume_data['contact'] else 'user'
+        full_name = resume_data.get('contact', {}).get('full_name', 'user')
         filename_base = f"resume_{full_name.replace(' ', '_')}"
     
     format_choices = questionary.checkbox("Select output format(s):", choices=["PDF (via LaTeX)", "Word (DOCX)"]).ask()
@@ -595,7 +603,7 @@ def generation_workflow(resume_data, filename_base=None):
 
 def job_description_workflow(application):
     """Workflow for analyzing a job description for a specific application."""
-    CONSOLE.print(Panel(f"Analyzing for: [bold]{application['job_title']} at {application['company']}[/bold]", expand=False, border_style="cyan"))
+    CONSOLE.print(Panel(f"Analyzing for: [bold]{application.get('job_title')} at {application.get('company')}[/bold]", expand=False, border_style="cyan"))
     CONSOLE.print("[cyan]First, load the base resume profile you want to tailor.[/cyan]")
     resume_data = load_profile()
     if not resume_data: return
@@ -627,7 +635,7 @@ def job_description_workflow(application):
 
 def cover_letter_workflow(application):
     """Workflow for generating a personalized cover letter for a specific application."""
-    CONSOLE.print(Panel(f"Generating Cover Letter for: [bold]{application['job_title']} at {application['company']}[/bold]", expand=False, border_style="green"))
+    CONSOLE.print(Panel(f"Generating Cover Letter for: [bold]{application.get('job_title')} at {application.get('company')}[/bold]", expand=False, border_style="green"))
     CONSOLE.print("[cyan]First, load a resume profile to get your contact info and experience.[/cyan]")
     resume_data = load_profile()
     if not resume_data: return
@@ -657,7 +665,7 @@ def cover_letter_workflow(application):
             latex_code = generate_cover_letter_latex(resume_data, cl_info)
             if latex_code:
                 # FIX: Use .get() for safer dictionary access.
-                full_name = resume_data['contact']['full_name'] if isinstance(resume_data, dict) and 'contact' in resume_data and 'full_name' in resume_data['contact'] else 'user'
+                full_name = resume_data.get('contact', {}).get('full_name', 'user')
                 company_name = cl_info.get('company', 'company')
                 filename_base = f"Cover_Letter_{full_name.replace(' ', '_')}_for_{company_name.replace(' ', '_')}"
                 compile_latex_to_pdf(latex_code, filename_base)
@@ -700,7 +708,7 @@ def batch_resume_workflow():
             if suggested_edits:
                 updated_resume_data = apply_ai_edits(base_resume_data, suggested_edits)
                 # FIX: Use .get() for safer dictionary access.
-                full_name = base_resume_data['contact']['full_name'] if isinstance(base_resume_data, dict) and 'contact' in base_resume_data and 'full_name' in base_resume_data['contact'] else 'user'
+                full_name = base_resume_data.get('contact', {}).get('full_name', 'user')
                 company_name = target_app.get('company', 'company')
                 filename_base = f"resume_{full_name.replace(' ', '_')}_for_{company_name.replace(' ', '_')}"
                 
@@ -709,7 +717,7 @@ def batch_resume_workflow():
                     generated_filename = compile_latex_to_pdf(latex_code, filename_base)
                     if generated_filename:
                         for original_app in applications:
-                            if original_app['company'] == target_app['company'] and original_app['job_title'] == target_app['job_title']:
+                            if original_app.get('company') == target_app.get('company') and original_app.get('job_title') == target_app.get('job_title'):
                                 original_app['resume_version'] = generated_filename
                                 break
                         save_data(applications, JOB_TRACKER_FILE)
@@ -727,7 +735,7 @@ def batch_resume_workflow():
 def job_tracker_menu(application):
     """Shows the action menu for a single selected job application."""
     while True:
-        CONSOLE.print(Panel(f"Selected Application: [bold]{application['job_title']} at {application['company']}[/bold]", border_style="purple"))
+        CONSOLE.print(Panel(f"Selected Application: [bold]{application.get('job_title')} at {application.get('company')}[/bold]", border_style="purple"))
         choice = questionary.select(
             "What would you like to do with this application?",
             choices=[
@@ -752,7 +760,7 @@ def job_tracker_menu(application):
             # We need to find the application in the main list to update it
             applications = load_data(JOB_TRACKER_FILE)
             for i, app in enumerate(applications):
-                if app['company'] == application['company'] and app['job_title'] == application['job_title']:
+                if app.get('company') == application.get('company') and app.get('job_title') == application.get('job_title'):
                     new_status = questionary.select("Select new status:", choices=["Applied", "Interviewing", "Offer Received", "Rejected", "Closed"]).ask()
                     if new_status:
                         applications[i]['status'] = new_status

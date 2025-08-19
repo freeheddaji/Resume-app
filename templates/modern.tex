@@ -11,7 +11,8 @@
 \urlstyle{{same}}
 \setlength{{\parindent}}{{0pt}}
 \titleformat{{\section}}{{\vspace{{8pt}}\scshape\raggedright\large\bfseries}}{{}}{{0em}}{{}}[\color{{black}}\titlerule \vspace{{-5pt}}]
-\newcommand{{\resumeItem}}[1]{{\item\small{{\justify{{#1}}}}}}
+% FIX: Removed the invalid \justify command. Standard \item already handles text flow.
+\newcommand{{\resumeItem}}[1]{{\item\small{{#1}}}}
 
 \begin{{document}}
 
@@ -26,8 +27,6 @@
 {EXPERIENCE_SECTION}
 
 {EDUCATION_SECTION}
-
-\newpage
 
 {SKILLS_SECTION}
 
