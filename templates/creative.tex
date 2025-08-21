@@ -6,6 +6,7 @@
 \usepackage[hidelinks]{{hyperref}}
 \usepackage{{enumitem}}
 \usepackage{{fontawesome5}} % For icons
+\usepackage{{lmodern}} % FIX: Added for font compatibility
 
 \definecolor{{primarycolor}}{{rgb}}{{0.2, 0.4, 0.6}} % A nice blue
 \definecolor{{secondarycolor}}{{rgb}}{{0.95, 0.95, 0.95}} % A light grey
@@ -13,6 +14,7 @@
 \geometry{{a4paper, left=0.75in, right=0.75in, top=0.75in, bottom=0.75in}}
 \pagestyle{{empty}}
 \setlength{{\parindent}}{{0pt}}
+\renewcommand{{\familydefault}}{{\sfdefault}} % Use sans-serif font
 
 \titleformat{{\section}}{{\vspace{{10pt}}\color{{primarycolor}}\scshape\raggedright\Large\bfseries}}{{}}{{0em}}{{}}
 
@@ -28,7 +30,7 @@
 
             \faEnvelope \hspace{{2pt}} \href{{mailto:{EMAIL}}}{{{EMAIL}}} \quad
             \faPhone \hspace{{2pt}} {PHONE} \quad
-            \faLinkedin \hspace{{2pt}} \href{{{LINKEDIN}}}{{{LINKEDIN_DISPLAY}}}
+            \faLinkedin \hspace{{2pt}} \href{{{LINKEDIN_URL}}}{{{LINKEDIN_DISPLAY}}}
             \vspace{{5pt}}
         \end{{minipage}}
     }}

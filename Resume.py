@@ -71,10 +71,15 @@ def save_data(data, file_path):
 
 
 # --- Utility Functions ---
+def clean_text(text):
+    """Removes problematic double backslashes before LaTeX sanitization."""
+    if not isinstance(text, str):
+        return text
+    return text.replace('\\&', '&').replace('\\%', '%')
+
 def sanitize_for_latex(text):
     """Escapes special LaTeX characters in a given string."""
     if not text: return ""
-    # FIX: Corrected escaping for special characters (e.g., r'\\&' to r'\&')
     conv = {
         '&': r'\&', '%': r'\%', '$': r'\$', '#': r'\#', '_': r'\_',
         '{': r'\{', '}': r'\}', '~': r'\textasciitilde{}',
@@ -82,6 +87,11 @@ def sanitize_for_latex(text):
     }
     regex = re.compile('|'.join(re.escape(key) for key in sorted(conv.keys(), key=len, reverse=True)))
     return regex.sub(lambda match: conv[match.group()], text)
+
+def process_for_latex(text):
+    """A single function to both clean and sanitize text for LaTeX."""
+    return sanitize_for_latex(clean_text(text))
+
 
 def get_multiline_input(prompt):
     """Gathers multi-line input from the user."""
@@ -300,11 +310,10 @@ def check_for_reminders():
 # --- LaTeX Section Builders & Generation ---
 def build_summary_section(data):
     """Builds the LaTeX code for the summary section."""
-    if not data.get("summary"):
+    summary = data.get("summary")
+    if not summary:
         return ""
-    # FIX: Removed the non-standard \justify{...} command.
-    # LaTeX justifies paragraphs by default.
-    return f"\\section*{{Summary}}\n{sanitize_for_latex(data['summary'])}\\vspace{{10pt}}\n"
+    return f"\\section*{{Summary}}\n{process_for_latex(summary)}\\vspace{{10pt}}\n"
 
 def build_experience_section(data):
     """Builds the LaTeX code for the professional experience section."""
@@ -312,22 +321,17 @@ def build_experience_section(data):
         return ""
     experience_str = "\\section*{Professional Experience}\n\\begin{itemize}[leftmargin=0.15in, label={}]\n"
     for entry in data["experience"]:
-        title = sanitize_for_latex(entry.get('title', ''))
-        dates = sanitize_for_latex(entry.get('dates', ''))
-        company = sanitize_for_latex(entry.get('company', ''))
-        location = sanitize_for_latex(entry.get('location', ''))
+        title = process_for_latex(entry.get('title', ''))
+        dates = process_for_latex(entry.get('dates', ''))
+        company = process_for_latex(entry.get('company', ''))
+        location = process_for_latex(entry.get('location', ''))
         
-        # FIX: Replaced problematic '\\textbackslash{}' with a simple '/' for clarity.
-        title = title.replace('\\textbackslash{}', '/')
-
         experience_str += f"  \\item\n    \\begin{{tabular*}}{{\\textwidth}}{{@{{\\extracolsep{{\\fill}}}}l r}}\n      \\textbf{{\\large {title}}} & {{\\small {dates}}} \\\\\n      \\textit{{\\small {company}}} & \\textit{{\\small {location}}} \\\\\n    \\end{{tabular*}}\\vspace{{-2pt}}\n"
         
         if entry.get('accomplishments'):
             experience_str += "    \\begin{itemize}[leftmargin=0.2in, topsep=0pt, itemsep=-2pt]\n"
             for acc in entry['accomplishments']:
-                # FIX: Removed the non-standard \justify{...} command from here.
-                # Also, replaced '\\%' which can cause issues with a simple '%' after sanitizing.
-                sanitized_acc = sanitize_for_latex(acc).replace('\\textbackslash{}\\%', '\\%')
+                sanitized_acc = process_for_latex(acc)
                 experience_str += f"      \\item \\small{{{sanitized_acc}}}\n"
             experience_str += "    \\end{itemize}\n"
     experience_str += "\\end{itemize}\n\n"
@@ -337,7 +341,10 @@ def build_education_section(data):
     if not data.get("education"): return ""
     education_str = "\\section*{Education}\n\\begin{itemize}[leftmargin=0.15in, label={}]\n"
     for entry in data["education"]:
-        institution = sanitize_for_latex(entry.get('institution', '')); dates = sanitize_for_latex(entry.get('dates', '')); degree = sanitize_for_latex(entry.get('degree', '')); location = sanitize_for_latex(entry.get('location', ''))
+        institution = process_for_latex(entry.get('institution', ''))
+        dates = process_for_latex(entry.get('dates', ''))
+        degree = process_for_latex(entry.get('degree', ''))
+        location = process_for_latex(entry.get('location', ''))
         education_str += f"  \\item\n    \\begin{{tabular*}}{{\\textwidth}}{{@{{\\extracolsep{{\\fill}}}}l r}}\n      \\textbf{{\\large {institution}}} & {{\\small {dates}}} \\\\\n      \\textit{{\\small {degree}}} & \\textit{{\\small {location}}} \\\\\n    \\end{{tabular*}}\\vspace{{-2pt}}\n"
     education_str += "\\end{itemize}\n\n"
     return education_str
@@ -352,19 +359,13 @@ def build_skills_section(data):
     tech_skills = skills.get("technical", [])
     prof_skills = skills.get("professional", [])
 
-    def clean_skill(skill):
-        """Cleans up common problematic text before sanitizing."""
-        # FIX: Replace awkward line breaks and backslashes with a simple " & "
-        skill = skill.replace('\\textbackslash{}\\&', ' & ')
-        return sanitize_for_latex(skill)
-
     tech_col_width = "0.5" if tech_skills and prof_skills else "1.0"
     prof_col_width = "0.5" if tech_skills and prof_skills else "1.0"
 
     if tech_skills:
         skills_str += f"\\begin{{minipage}}[t]{{{tech_col_width}\\textwidth}}\n    \\begin{{itemize}}[leftmargin=0.15in, label={{}}, noitemsep, topsep=0pt]\n        \\item \\textbf{{Technical Skills}}\n        \\begin{{itemize}}[leftmargin=0.2in, topsep=2pt, itemsep=-2pt]\n"
         for skill in tech_skills:
-            skills_str += f"            \\item {clean_skill(skill)}\n"
+            skills_str += f"            \\item {process_for_latex(skill)}\n"
         skills_str += "        \\end{itemize}\n    \\end{itemize}\n\\end{minipage}"
         if prof_skills:
             skills_str += "%\n"
@@ -372,7 +373,7 @@ def build_skills_section(data):
     if prof_skills:
         skills_str += f"\\begin{{minipage}}[t]{{{prof_col_width}\\textwidth}}\n    \\begin{{itemize}}[leftmargin=0.15in, label={{}}, noitemsep, topsep=0pt]\n        \\item \\textbf{{Professional Skills}}\n        \\begin{{itemize}}[leftmargin=0.2in, topsep=2pt, itemsep=-2pt]\n"
         for skill in prof_skills:
-            skills_str += f"            \\item {clean_skill(skill)}\n"
+            skills_str += f"            \\item {process_for_latex(skill)}\n"
         skills_str += "        \\end{itemize}\n    \\end{itemize}\n\\end{minipage}\n\n"
         
     return skills_str
@@ -380,7 +381,7 @@ def build_skills_section(data):
 def build_languages_section(data):
     if not data.get("languages"): return ""
     lang_str = "\\section*{Languages}\n\\begin{itemize}[leftmargin=0.15in, topsep=0pt]\n"
-    for lang in data["languages"]: lang_str += f"    \\item {sanitize_for_latex(lang)}\n"
+    for lang in data["languages"]: lang_str += f"    \\item {process_for_latex(lang)}\n"
     lang_str += "\\end{itemize}\n"
     return lang_str
 def build_photo_block(data):
@@ -405,8 +406,8 @@ def compile_latex_to_pdf(latex_code, filename_base):
         try:
             cmd_args = ["pdflatex", "-interaction=nonstopmode", "-output-directory", output_dir, tex_filepath]
             # Run twice to ensure table of contents, etc., are correct
-            subprocess.run(cmd_args, check=True, capture_output=True, text=True)
-            subprocess.run(cmd_args, check=True, capture_output=True, text=True)
+            subprocess.run(cmd_args, check=True, capture_output=True, text=True, encoding='utf-8')
+            subprocess.run(cmd_args, check=True, capture_output=True, text=True, encoding='utf-8')
             pdf_path = os.path.join(output_dir, f"{filename_base}.pdf")
             CONSOLE.print(f"[bold green]✔ Successfully created {pdf_path}[/bold green]")
             return f"{filename_base}.pdf"
@@ -416,7 +417,6 @@ def compile_latex_to_pdf(latex_code, filename_base):
             
             # DEBUGGING: Enhanced error reporting
             error_output = e.stdout if e.stdout else ""
-            error_output += e.stderr if e.stderr else ""
 
             if error_output:
                 # Try to find the specific error line from the output
@@ -426,13 +426,15 @@ def compile_latex_to_pdf(latex_code, filename_base):
                 error_message = "Could not automatically pinpoint the exact error line from the log."
                 if error_line_match and context_match:
                     error_message = f"Error: {error_line_match.group(0)}\nContext: {context_match.group(0)}"
+                elif error_line_match:
+                    error_message = f"Error: {error_line_match.group(0)}"
                 
                 CONSOLE.print(Panel(error_message, title="[bold red]Compiler Error Snapshot[/bold red]", border_style="red"))
                 CONSOLE.print("[cyan]The full compiler output is in the .log file. The most critical error is usually near the end.[/cyan]")
             return None
         finally:
             # Clean up auxiliary files
-            for ext in [".aux", ".log"]:
+            for ext in [".aux", ".log", ".out"]:
                 aux_file = os.path.join(output_dir, filename_base + ext)
                 if os.path.exists(aux_file):
                     try: os.remove(aux_file)
@@ -444,9 +446,26 @@ def generate_resume_latex(data, template_name):
         CONSOLE.print(f"[bold red]Error: Template file not found: {template_path}[/bold red]")
         return None
     with open(template_path, 'r', encoding='utf-8') as f: template_string = f.read()
+    
     contact = data.get("contact", {})
-    linkedin_display = contact.get('linkedin', '').replace('https://www.', '').replace('http://www.', '')
-    placeholders = {"FULL_NAME": sanitize_for_latex(contact.get('full_name', '')), "EMAIL": sanitize_for_latex(contact.get('email', '')), "PHONE": sanitize_for_latex(contact.get('phone', '')), "LINKEDIN": sanitize_for_latex(contact.get('linkedin', '')), "LINKEDIN_DISPLAY": sanitize_for_latex(linkedin_display), "SUMMARY_SECTION": build_summary_section(data), "EXPERIENCE_SECTION": build_experience_section(data), "EDUCATION_SECTION": build_education_section(data), "SKILLS_SECTION": build_skills_section(data), "LANGUAGES_SECTION": build_languages_section(data), "PHOTO_BLOCK": build_photo_block(data)}
+    linkedin_url = contact.get('linkedin', '')
+    if linkedin_url and not linkedin_url.startswith(('http://', 'https://')):
+        linkedin_url = 'https://' + linkedin_url
+    linkedin_display = linkedin_url.replace('https://www.', '').replace('http://www.', '').replace('https://', '').replace('http://', '')
+
+    placeholders = {
+        "FULL_NAME": process_for_latex(contact.get('full_name', '')), 
+        "EMAIL": process_for_latex(contact.get('email', '')), 
+        "PHONE": process_for_latex(contact.get('phone', '')), 
+        "LINKEDIN_URL": process_for_latex(linkedin_url), 
+        "LINKEDIN_DISPLAY": process_for_latex(linkedin_display), 
+        "SUMMARY_SECTION": build_summary_section(data), 
+        "EXPERIENCE_SECTION": build_experience_section(data), 
+        "EDUCATION_SECTION": build_education_section(data), 
+        "SKILLS_SECTION": build_skills_section(data), 
+        "LANGUAGES_SECTION": build_languages_section(data), 
+        "PHOTO_BLOCK": build_photo_block(data)
+    }
     return template_string.format(**placeholders)
 
 def generate_cover_letter_latex(resume_data, cl_data):
@@ -458,16 +477,20 @@ def generate_cover_letter_latex(resume_data, cl_data):
     with open(template_path, 'r', encoding='utf-8') as f: template_string = f.read()
     
     contact = resume_data.get("contact", {})
+    linkedin_url = contact.get('linkedin', '')
+    if linkedin_url and not linkedin_url.startswith(('http://', 'https://')):
+        linkedin_url = 'https://' + linkedin_url
+
     placeholders = {
-        "FULL_NAME": sanitize_for_latex(contact.get('full_name', '')),
-        "EMAIL": sanitize_for_latex(contact.get('email', '')),
-        "PHONE": sanitize_for_latex(contact.get('phone', '')),
-        "LINKEDIN": sanitize_for_latex(contact.get('linkedin', '')),
-        "HIRING_MANAGER": sanitize_for_latex(cl_data.get('hiring_manager', 'Hiring Team')),
-        "COMPANY": sanitize_for_latex(cl_data.get('company', '')),
-        "COMPANY_ADDRESS": sanitize_for_latex(cl_data.get('company_address', '')),
-        "JOB_TITLE": sanitize_for_latex(cl_data.get('job_title', '')),
-        "BODY": cl_data.get('body', '')
+        "FULL_NAME": process_for_latex(contact.get('full_name', '')),
+        "EMAIL": process_for_latex(contact.get('email', '')),
+        "PHONE": process_for_latex(contact.get('phone', '')),
+        "LINKEDIN_URL": process_for_latex(linkedin_url),
+        "HIRING_MANAGER": process_for_latex(cl_data.get('hiring_manager', 'Hiring Team')),
+        "COMPANY": process_for_latex(cl_data.get('company', '')),
+        "COMPANY_ADDRESS": process_for_latex(cl_data.get('company_address', '')),
+        "JOB_TITLE": process_for_latex(cl_data.get('job_title', '')),
+        "BODY": process_for_latex(cl_data.get('body', ''))
     }
     return template_string.format(**placeholders)
 
@@ -659,7 +682,7 @@ def cover_letter_workflow(application):
 
     ai_body = get_ai_cover_letter_body(resume_data, cl_info, tone)
     if ai_body:
-        cl_info['body'] = sanitize_for_latex(ai_body)
+        cl_info['body'] = ai_body # Store the raw body, processing happens in the generate function
         CONSOLE.print(Panel(ai_body, title=f"[bold green]AI-Generated Cover Letter Body ({tone})[/bold green]", border_style="green"))
         if questionary.confirm("Do you want to use this draft and generate the full letter?").ask():
             latex_code = generate_cover_letter_latex(resume_data, cl_info)

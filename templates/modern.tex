@@ -6,12 +6,13 @@
 \usepackage[hidelinks]{{hyperref}}
 \usepackage{{enumitem}}
 \usepackage{{ragged2e}}
+\usepackage{{lmodern}} % FIX: Added for font compatibility
 
 \geometry{{a4paper, left=0.75in, right=0.75in, top=0.75in, bottom=0.75in, footskip=.5cm}}
 \urlstyle{{same}}
 \setlength{{\parindent}}{{0pt}}
+\renewcommand{{\familydefault}}{{\sfdefault}} % Use sans-serif font
 \titleformat{{\section}}{{\vspace{{8pt}}\scshape\raggedright\large\bfseries}}{{}}{{0em}}{{}}[\color{{black}}\titlerule \vspace{{-5pt}}]
-% FIX: Removed the invalid \justify command. Standard \item already handles text flow.
 \newcommand{{\resumeItem}}[1]{{\item\small{{#1}}}}
 
 \begin{{document}}
@@ -19,7 +20,7 @@
 \begin{{center}}
     {{\Huge \scshape \textbf{{FULL_NAME}}}} \\
     \vspace{{5pt}}
-    \href{{mailto:{EMAIL}}}{{{EMAIL}}} $|$ {PHONE} $|$ \href{{{LINKEDIN}}}{{{LINKEDIN_DISPLAY}}}
+    \href{{mailto:{EMAIL}}}{{{EMAIL}}} $|$ {PHONE} $|$ \href{{{LINKEDIN_URL}}}{{{LINKEDIN_DISPLAY}}}
 \end{{center}}
 
 {SUMMARY_SECTION}

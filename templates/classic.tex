@@ -1,8 +1,9 @@
 \documentclass[a4paper,10pt]{{article}}
 \usepackage[utf8]{{inputenc}}
 \usepackage{{geometry}}
-\usepackage{{helvet}}
+\usepackage{{lmodern}} % FIX: Replaced 'helvet' with the more compatible 'lmodern' package
 \usepackage[hidelinks]{{hyperref}}
+\usepackage{{enumitem}}
 \renewcommand{{\familydefault}}{{\sfdefault}}
 \geometry{{a4paper, total={{170mm,257mm}}, left=20mm, top=20mm}}
 \pagestyle{{empty}}
@@ -13,7 +14,7 @@
     {{\LARGE \bfseries {FULL_NAME}}}
 
     \vspace{{2mm}}
-    {PHONE} $\cdot$ \href{{mailto:{EMAIL}}}{{{EMAIL}}} $\cdot$ \href{{{LINKEDIN}}}{{LinkedIn Profile}}
+    {PHONE} $\cdot$ \href{{mailto:{EMAIL}}}{{{EMAIL}}} $\cdot$ \href{{{LINKEDIN_URL}}}{{{LINKEDIN_DISPLAY}}}
 \end{{center}}
 
 {SUMMARY_SECTION}

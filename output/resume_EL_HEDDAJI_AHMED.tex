@@ -1,25 +1,20 @@
-\documentclass[a4paper,11pt]{article}
-\usepackage[english]{babel}
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
 \usepackage{geometry}
-\usepackage{titlesec}
-\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{lmodern} % FIX: Replaced 'helvet' with the more compatible 'lmodern' package
 \usepackage[hidelinks]{hyperref}
 \usepackage{enumitem}
-\usepackage{ragged2e}
-
-\geometry{a4paper, left=0.75in, right=0.75in, top=0.75in, bottom=0.75in, footskip=.5cm}
-\urlstyle{same}
-\setlength{\parindent}{0pt}
-\titleformat{\section}{\vspace{8pt}\scshape\raggedright\large\bfseries}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
-% FIX: Removed the invalid \justify command. Standard \item already handles text flow.
-\newcommand{\resumeItem}[1]{\item\small{#1}}
+\renewcommand{\familydefault}{\sfdefault}
+\geometry{a4paper, total={170mm,257mm}, left=20mm, top=20mm}
+\pagestyle{empty}
 
 \begin{document}
 
 \begin{center}
-    {\Huge \scshape \textbf{FULL_NAME}} \\
-    \vspace{5pt}
-    \href{mailto:elheddaji.ahmed1@gmail.com}{elheddaji.ahmed1@gmail.com} $|$ 0600473545 $|$ \href{www.linkedin.com/in/ahmed-el-heddaji-a4a2b32b2}{www.linkedin.com/in/ahmed-el-heddaji-a4a2b32b2}
+    {\LARGE \bfseries EL HEDDAJI AHMED}
+
+    \vspace{2mm}
+    0600473545 $\cdot$ \href{mailto:elheddaji.ahmed1@gmail.com}{elheddaji.ahmed1@gmail.com} $\cdot$ \href{https://www.linkedin.com/in/ahmed-el-heddaji-a4a2b32b2}{linkedin.com/in/ahmed-el-heddaji-a4a2b32b2}
 \end{center}
 
 \section*{Summary}
@@ -30,7 +25,7 @@ Highly analytical and process-driven professional with a proven track record in 
 \begin{itemize}[leftmargin=0.15in, label={}]
   \item
     \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}l r}
-      \textbf{\large HR Development /\& OLS Intern} & {\small Nov 2024 -- Apr 2025} \\
+      \textbf{\large HR Development \& OLS Intern} & {\small Nov 2024 -- Apr 2025} \\
       \textit{\small YAZAKI} & \textit{\small Kenitra, Morocco} \\
     \end{tabular*}\vspace{-2pt}
     \begin{itemize}[leftmargin=0.2in, topsep=0pt, itemsep=-2pt]
@@ -92,11 +87,11 @@ Highly analytical and process-driven professional with a proven track record in 
         \item \textbf{Professional Skills}
         \begin{itemize}[leftmargin=0.2in, topsep=2pt, itemsep=-2pt]
             \item Problem Solving
-            \item Adaptability \textbackslash{}\& Flexibility
-            \item Multitasking \textbackslash{}\& Time Management
-            \item Communication (Written \textbackslash{}\& Verbal)
+            \item Adaptability \& Flexibility
+            \item Multitasking \& Time Management
+            \item Communication (Written \& Verbal)
             \item Attention to details
-            \item Teamwork \textbackslash{}\& Collaboration
+            \item Teamwork \& Collaboration
         \end{itemize}
     \end{itemize}
 \end{minipage}

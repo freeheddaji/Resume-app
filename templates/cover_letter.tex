@@ -1,12 +1,12 @@
 \documentclass[11pt, a4paper]{{letter}}
 \usepackage[english]{{babel}}
 \usepackage[hidelinks]{{hyperref}}
-\usepackage{{helvet}}
+\usepackage{{lmodern}} % FIX: Replaced 'helvet' with the more compatible 'lmodern' package
 \renewcommand{{\familydefault}}{{\sfdefault}}
 
 % --- Your details for the header ---
 \signature{{{FULL_NAME}}}
-\address{{{FULL_NAME} \\ {PHONE} \\ \href{{mailto:{EMAIL}}}{{{EMAIL}}} \\ \href{{{LINKEDIN}}}{{LinkedIn Profile}}}}
+\address{{{FULL_NAME} \\ {PHONE} \\ \href{{mailto:{EMAIL}}}{{{EMAIL}}} \\ \href{{{LINKEDIN_URL}}}{{LinkedIn Profile}}}}
 
 % --- Removes the default indentation for the closing signature ---
 \longindentation=0pt 
